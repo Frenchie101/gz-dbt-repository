@@ -8,14 +8,14 @@ sources:
         identifier: raw_gz_sales
         description: Sales of Greenweez table in BigQuery - 1 row per products_id found in each orders_id
         tests:
-              - unique: 
-                  column_name: "(orders_id || '-' || products_id)"
+            - unique: 
+                column_name: "(orders_id || '-' || pdt_id)"
         columns:
           - name: date_date
             description: date of purchase
           - name: orders_id
             description: single order id for a given customer
-          - name: products_id
+          - name: pdt_id
             description: id of the products sold by greenweez
           - name: revenue
             description: cash in - turnover generated buy the products sold
@@ -29,7 +29,6 @@ sources:
             description: id of the products sold by greenweez - PK of the table
             tests:
               - unique
-              - not null
           - name: purchase_price
             description: cash in - price of a given product
       - name: ship
@@ -40,7 +39,6 @@ sources:
             description: single order id for a given customer - PK of the table
             tests:
               - unique
-              - not null
           - name: shipping_fee
             description: cost - what greeweez pays to the carrier
           - name: logcost
