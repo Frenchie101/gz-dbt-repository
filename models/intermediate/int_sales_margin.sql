@@ -1,6 +1,6 @@
 select 
     *
-    --, ROUND((quantity * purchase_price),2) as purchase_cost
+    , ROUND((quantity * purchase_price),2) as purchase_cost
     , ROUND(revenue - (quantity * purchase_price)
     ,2
 
