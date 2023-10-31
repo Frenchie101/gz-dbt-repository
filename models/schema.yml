@@ -2,13 +2,49 @@ version: 2
 sources:
   - name: raw
     schema: gz_raw_data
+    description: greenweez raw data source
     tables:
       - name: sales
         identifier: raw_gz_sales
-        description: Sales table in BigQuery - we want to rename the identifier in BQ as name 
+        description: Sales of Greenweez table in BigQuery - 1 row per products_id found in each orders_id
+        tests:
+              - unique: 
+                  column_name: "(orders_id || '-' || products_id)"
+        columns:
+          - name: date_date
+            description: date of purchase
+          - name: orders_id
+            description: single order id for a given customer
+          - name: products_id
+            description: id of the products sold by greenweez
+          - name: revenue
+            description: cash in - turnover generated buy the products sold
+          - name: quantity
+            description: number of units sold  
       - name: product
         identifier: raw_gz_product
-        description: product table in BigQuery - we want to rename the identifier in BQ as name 
+        description: table of greenweez products in BigQuery 
+        columns:
+          - name: products_id
+            description: id of the products sold by greenweez - PK of the table
+            tests:
+              - unique
+              - not null
+          - name: purchase_price
+            description: cash in - price of a given product
       - name: ship
         identifier: raw_gz_ship
-        description: ship table in BigQuery - we want to rename the identifier in BQ as name 
+        description: table of shipping info of Greenweez in BigQuery 
+        columns:
+          - name: orders_id
+            description: single order id for a given customer - PK of the table
+            tests:
+              - unique
+              - not null
+          - name: shipping_fee
+            description: cost - what greeweez pays to the carrier
+          - name: logcost
+            description: cash out 
+          - name: ship_cost
+            description: cash in 
+
