@@ -45,7 +45,90 @@ sources:
             description: cash out 
           - name: ship_cost
             description: cash in 
-
+      - name: adwords
+        identifier: raw_gz_adwords
+        description: table of the various costs related to the Google ads campaigns
+        tests:
+            - unique: 
+                column_name: "(date_date || '-' || campaign_key)"        
+        columns:
+          - name: date_date
+            description: primary key - date of the campaign
+          - name: campaign_key
+            description: primary key - ID of each campaign composed of 13 integers
+          - name: paid_source
+            description: name of the source (here Google)
+          - name: camPGN_name 
+            description: specific name associated to as specific campaign under the format IA - COM - [PUR - ACQ] - DABA
+          - name: ads_cost
+            description: cost associated with the google ads 
+          - name: impression
+            description: number of impressions the ads bring 
+          - name: click
+            description: number of clicks the impressions bring 
+      - name: bing
+        identifier: raw_gz_bing
+        description: table of the various costs related to the Bing ads campaigns
+        tests:
+            - unique: 
+                column_name: "(date_date || '-' || campaign_key)"        
+        columns:
+          - name: date_date
+            description: primary key - date of the campaign
+          - name: campaign_key
+            description: primary key - ID of each campaign composed of 13 integers
+          - name: paid_source
+            description: name of the source (here Bing)
+          - name: camPGN_name 
+            description: specific name associated to as specific campaign under the format IA - COM - [PUR - ACQ] - DABA
+          - name: ads_cost
+            description: cost associated with the Bing ads 
+          - name: impression
+            description: number of impressions the ads bring 
+          - name: click
+            description: number of clicks the impressions bring 
+      - name: criteo
+        identifier: raw_gz_criteo
+        description: table of the various costs related to the Criteo ads campaigns
+        tests:
+            - unique: 
+                column_name: "(date_date || '-' || campaign_key)"        
+        columns:
+          - name: date_date
+            description: primary key - date of the campaign
+          - name: campaign_key
+            description: primary key - ID of each campaign composed of 13 integers
+          - name: paid_source
+            description: name of the source (here Criteo)
+          - name: camPGN_name 
+            description: specific name associated to as specific campaign under the format IA - COM - [PUR - ACQ] - DABA
+          - name: ads_cost
+            description: cost associated with the Criteo ads 
+          - name: impression
+            description: number of impressions the ads bring 
+          - name: click
+            description: number of clicks the impressions bring 
+      - name: facebook
+        identifier: raw_gz_facebook
+        description: table of the various costs related to the Google ads campaigns
+        tests:
+            - unique: 
+                column_name: "(date_date || '-' || campaign_key)"        
+        columns:
+          - name: date_date
+            description: primary key - date of the campaign
+          - name: campaign_key
+            description: primary key - ID of each campaign composed of 13 integers
+          - name: paid_source
+            description: name of the source (here Facebook)
+          - name: camPGN_name 
+            description: specific name associated to as specific campaign under the format IA - COM - [PUR - ACQ] - DABA
+          - name: ads_cost
+            description: cost associated with the Facebook ads 
+          - name: impression
+            description: number of impressions the ads bring 
+          - name: click
+            description: number of clicks the impressions bring 
 models:
   - name: int_sales_margin
     description: sales margin calcultation per product
