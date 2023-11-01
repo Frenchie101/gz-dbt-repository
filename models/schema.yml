@@ -335,7 +335,7 @@ models:
             - impression
             - click
   - name: finance_campaigns_day
-    description: summary of the ads_margin column requested by marketing and finance team
+    description: summary of the ads_margin column requested by marketing and finance team and grouped by day 
     columns:
       - name: date_date
         description: primary key - date of the campaign
@@ -360,6 +360,26 @@ models:
             - paid_source
             - campaign_key
             - campaign_name
+            - ads_cost
+            - impression
+            - click
+  - name: finance_campaigns_month
+    description: summary of the ads_margin column requested by marketing and finance team grouped by month
+    columns:
+      - name: datemonth
+        description: primary key - date grouped by month
+      - name: ads_cost
+        description: cost associated with the ads
+      - name: impression
+        description: number of impressions the ads bring
+      - name: click
+        description: number of clicks the impressions bring
+    tests:
+      - unique:
+          column_name: datemonth
+      - not_null:
+          column_name:
+            - datemonth
             - ads_cost
             - impression
             - click
