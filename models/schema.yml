@@ -314,3 +314,32 @@ models:
             - ads_cost
             - impression
             - click
+  - name: finance_campaigns_day
+    description: summary of the ads_margin column requested by marketing and finance team
+    columns:
+      - name: date_date
+        description: primary key - date of the campaign
+      - name: campaign_key
+        description: primary key 
+      - name: paid_source
+        description: name of the media sources
+      - name: campaign_name 
+        description: specific name associated to as specific campaign 
+      - name: ads_cost
+        description: cost associated with the ads 
+      - name: impression
+        description: number of impressions the ads bring 
+      - name: click
+        description: number of clicks the impressions bring 
+    tests:
+      - unique: 
+          column_name: "(date_date || '-' || campaign_key)"  
+      - not_null:
+          column_name:
+            - date_date
+            - paid_source
+            - campaign_key
+            - campaign_name
+            - ads_cost
+            - impression
+            - click
