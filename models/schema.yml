@@ -10,6 +10,11 @@ sources:
         tests:
             - unique: 
                 column_name: "(orders_id || '-' || pdt_id)"
+            #- freshness:
+            #  warn_after:
+            #  count: 90
+            #  period: day
+            #  loaded_at_field: "CAST(date_date AS TIMESTAMP)"
         columns:
           - name: date_date
             description: date of purchase
@@ -50,15 +55,24 @@ sources:
         description: table of the various costs related to the Google ads campaigns
         tests:
             - unique: 
-                column_name: "(date_date || '-' || campaign_key)"        
+                column_name: "(date_date || '-' || campaign_key)"  
+            - not_null:
+                column_name:
+                  - date_date
+                  - paid_source
+                  - campaign_key
+                  - campaign_name
+                  - ads_cost
+                  - impression
+                  - click      
         columns:
           - name: date_date
             description: primary key - date of the campaign
           - name: campaign_key
-            description: primary key - ID of each campaign composed of 13 integers
+            description: primary key
           - name: paid_source
             description: name of the source (here Google)
-          - name: camPGN_name 
+          - name: campaign_name 
             description: specific name associated to as specific campaign under the format IA - COM - [PUR - ACQ] - DABA
           - name: ads_cost
             description: cost associated with the google ads 
@@ -71,15 +85,24 @@ sources:
         description: table of the various costs related to the Bing ads campaigns
         tests:
             - unique: 
-                column_name: "(date_date || '-' || campaign_key)"        
+                column_name: "(date_date || '-' || campaign_key)"    
+            - not_null:
+                column_name:
+                  - date_date
+                  - paid_source
+                  - campaign_key
+                  - campaign_name
+                  - ads_cost
+                  - impression
+                  - click                
         columns:
           - name: date_date
             description: primary key - date of the campaign
           - name: campaign_key
-            description: primary key - ID of each campaign composed of 13 integers
+            description: primary key 
           - name: paid_source
             description: name of the source (here Bing)
-          - name: camPGN_name 
+          - name: campaign_name 
             description: specific name associated to as specific campaign under the format IA - COM - [PUR - ACQ] - DABA
           - name: ads_cost
             description: cost associated with the Bing ads 
@@ -92,15 +115,24 @@ sources:
         description: table of the various costs related to the Criteo ads campaigns
         tests:
             - unique: 
-                column_name: "(date_date || '-' || campaign_key)"        
+                column_name: "(date_date || '-' || campaign_key)"   
+            - not_null:
+                column_name:
+                  - date_date
+                  - paid_source
+                  - campaign_key
+                  - campaign_name
+                  - ads_cost
+                  - impression
+                  - click   
         columns:
           - name: date_date
             description: primary key - date of the campaign
           - name: campaign_key
-            description: primary key - ID of each campaign composed of 13 integers
+            description: primary key 
           - name: paid_source
             description: name of the source (here Criteo)
-          - name: camPGN_name 
+          - name: campaign_name 
             description: specific name associated to as specific campaign under the format IA - COM - [PUR - ACQ] - DABA
           - name: ads_cost
             description: cost associated with the Criteo ads 
@@ -113,15 +145,24 @@ sources:
         description: table of the various costs related to the Google ads campaigns
         tests:
             - unique: 
-                column_name: "(date_date || '-' || campaign_key)"        
+                column_name: "(date_date || '-' || campaign_key)" 
+            - not_null:
+                column_name:
+                  - date_date
+                  - paid_source
+                  - campaign_key
+                  - campaign_name
+                  - ads_cost
+                  - impression
+                  - click 
         columns:
           - name: date_date
             description: primary key - date of the campaign
           - name: campaign_key
-            description: primary key - ID of each campaign composed of 13 integers
+            description: primary key 
           - name: paid_source
             description: name of the source (here Facebook)
-          - name: camPGN_name 
+          - name: campaign_name 
             description: specific name associated to as specific campaign under the format IA - COM - [PUR - ACQ] - DABA
           - name: ads_cost
             description: cost associated with the Facebook ads 
@@ -246,4 +287,32 @@ models:
             - average_basket
             - margin
             - total_operational_margin
-            
+  - name: int_campaigns
+    description: summary of the various media campaigns and their associated costs
+    columns:
+      - name: date_date
+        description: primary key - date of the campaign
+      - name: campaign_key
+        description: primary key 
+      - name: paid_source
+        description: name of the media sources
+      - name: campaign_name 
+        description: specific name associated to as specific campaign 
+      - name: ads_cost
+        description: cost associated with the ads 
+      - name: impression
+        description: number of impressions the ads bring 
+      - name: click
+        description: number of clicks the impressions bring 
+    tests:
+      - unique:
+          column_name: "(nb_transactions || '-' || revenue)"
+      - not_null:
+          column_name:
+            - date_date
+            - paid_source
+            - campaign_key
+            - campaign_name
+            - ads_cost
+            - impression
+            - click
