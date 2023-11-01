@@ -39,6 +39,8 @@ models:
   dbt_mdelespierre:
     # Applies to all files under models/example/
     staging:
-      +materialized: view
+      materialized: view
     marts:
-      +materialized: table
+      materialized: table
+      finance:
+        schema: finance
