@@ -6,10 +6,11 @@ select
     , fd.revenue
     , fd.margin
     , fd.total_operational_margin
-    , ic.ads_cost
+    , icd.ads_cost
 
 from
-{{ref('int_campaigns')}} as ic
+{{ref('int_campaigns_day')}} as icd
 LEFT JOIN
 {{ref('finance_days')}} as fd
 using (date_date)
+order by date_date
