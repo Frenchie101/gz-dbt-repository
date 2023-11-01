@@ -10,11 +10,9 @@ sources:
         tests:
             - unique: 
                 column_name: "(orders_id || '-' || pdt_id)"
-            #- freshness:
-            #  warn_after:
-            #  count: 90
-            #  period: day
-            #  loaded_at_field: "CAST(date_date AS TIMESTAMP)"
+        freshness:
+          warn_after: {count: 90, period: day}
+        loaded_at_field: "CAST(date_date AS TIMESTAMP)"
         columns:
           - name: date_date
             description: date of purchase
@@ -305,8 +303,8 @@ models:
       - name: click
         description: number of clicks the impressions bring 
     tests:
-      - unique:
-          column_name: "(nb_transactions || '-' || revenue)"
+      - unique: 
+          column_name: "(date_date || '-' || campaign_key)"  
       - not_null:
           column_name:
             - date_date
