@@ -163,5 +163,4 @@ models:
             - average_basket
             - margin
             - total_operational_margin
-
-        
+            
