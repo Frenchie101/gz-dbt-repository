@@ -1,0 +1,166 @@
+version: 2
+sources:
+  - name: raw
+    schema: gz_raw_data
+    description: greenweez raw data source
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+        description: Sales of Greenweez table in BigQuery - 1 row per products_id found in each orders_id
+        tests:
+            - unique: 
+                column_name: "(orders_id || '-' || pdt_id)"
+        columns:
+          - name: date_date
+            description: date of purchase
+          - name: orders_id
+            description: single order id for a given customer
+          - name: pdt_id
+            description: id of the products sold by greenweez
+          - name: revenue
+            description: cash in - turnover generated buy the products sold
+          - name: quantity
+            description: number of units sold  
+      - name: product
+        identifier: raw_gz_product
+        description: table of greenweez products in BigQuery 
+        columns:
+          - name: products_id
+            description: id of the products sold by greenweez - PK of the table
+            tests:
+              - unique
+          - name: purchase_price
+            description: cash in - price of a given product
+      - name: ship
+        identifier: raw_gz_ship
+        description: table of shipping info of Greenweez in BigQuery 
+        columns:
+          - name: orders_id
+            description: single order id for a given customer - PK of the table
+            tests:
+              - unique
+          - name: shipping_fee
+            description: cost - what greeweez pays to the carrier
+          - name: logcost
+            description: cash out 
+          - name: ship_cost
+            description: cash in 
+
+models:
+  - name: int_sales_margin
+    description: sales margin calcultation per product
+    columns:
+      - name: products_id
+        description: primary key
+      - name: orders_id
+        description: primary key
+      - name: margin
+        description: Margin = Revenue - Purchase_cost
+      - name: purchase_cost
+        description: Purchase_cost = Quantity * Purchase_price 
+      - name: date_date
+        description: date of the order
+      - name: revenue
+        description: sum of revenue per order 
+      - name: quantity
+        description: sum of quantity per order
+      - name: purchase_price
+        description: price of one product (sales)
+    tests:
+      - unique:
+         column_name: "(orders_id || '-' || products_id)"
+       #- not null:
+          #column_name:
+          #  - orders_id
+          #  - products_id
+          #  - margin
+          #  - purchase_cost
+          #  - date_date
+          #  - revenue
+          #  - quantity
+          #  - purchase_price
+  - name: int_orders_margin
+    description: margin calcultation per order
+    columns:
+      - name: orders_id
+        description: primary key
+      - name: total_margin
+        description: Margin = Revenue - Purchase_cost
+      - name: date_date
+        description: date of the order
+      - name: total_revenue
+        description: sum of revenue per order 
+      - name: total_quantity
+        description: sum of quantity per order
+    tests:
+      - unique:
+          column_name: orders_id
+      - not_null:
+          column_name:
+            - date_date
+            - orders_id
+            - total_margin
+            - total_quantity
+            - total_revenue
+  - name: int_orders_operational
+    description: operational margin calcultation per order
+    columns:
+      - name: orders_id
+        description: primary key
+      - name: total_margin
+        description: Margin = Revenue - Purchase_cost grouped by orders
+      - name: date_date
+        description: date of the order
+      - name: total_revenue
+        description: sum of revenue per order 
+      - name: total_quantity
+        description: sum of quantity per order
+      - name: shipping_fee
+        description: cost - what greeweez pays to the carrier
+      - name: logcost
+        description: cash out 
+      - name: ship_cost
+        description: cash in 
+      - name: operational_margin
+        description: total_margin + shipping_fee - logcost - ship_cost
+    tests:
+      - unique:
+          column_name: orders_id
+      - not_null:
+          column_name:
+            - orders_id
+            - date_date
+            - total_margin
+            - total_revenue
+            - total_quantity
+            - shipping_fee
+            - logcost
+            - ship_cost
+            - operational_margin
+  - name: finance_days
+    description: summary of financial KPIs for analysis 
+    columns:
+      - name: margin
+        description: Margin = Revenue - Purchase_cost grouped by orders
+      - name: date_date
+        description: date of the order
+      - name: nb_transactions
+        description: total number of orders aggregated
+      - name: revenue
+        description: sum of revenue per order 
+      - name: total_operational_margin
+        description: total_margin + shipping_fee - logcost - ship_cost
+      - name: average_basket
+        description: total revenue / number of orders
+    tests:
+      - unique:
+          column_name: "(nb_transactions || '-' || revenue)"
+      - not_null:
+          column_name:
+            - date_date
+            - nb_transactions
+            - revenue
+            - average_basket
+            - margin
+            - total_operational_margin
+            
